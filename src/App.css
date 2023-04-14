@@ -66,3 +66,14 @@
     height: 85%;
   }
 }
+
+@media (max-width: 800px) {
+  .cards-container {
+    width: 95%;
+    height: 80%;
+    margin: 1rem auto;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-gap: 0.5rem;
+  }
+}
