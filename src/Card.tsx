@@ -20,11 +20,11 @@ const RotatingCard: FC<CardProps> = (props) => {
 
   return (
     <div className={`card ${clicked}`} data-id={id} onClick={handleClickEvent}>
-      <div className={`card-side front ${pairFound} `}data-id={id}>
-        <div style={{backgroundImage: `${background}`}}>{background}</div>
+      <div className={`card-side front ${pairFound}`} data-id={id}>
+        <img src={background} alt="" />
       </div>
       <div className="card-side back" data-id={id}>
-        <div>back</div>
+        
       </div>
     </div>
   );
