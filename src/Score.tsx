@@ -16,8 +16,8 @@ const Score: FC<ScoreProps> = ({gameRunning, pairsFound, openControl, timer}) =>
   
   return <section className="top-bar">
     <nav>
-      <div>
-        <button onClick={()=> openControl('paused')}>Pause <FontAwesomeIcon icon={faPause} /></button>
+      <div className="pause">
+        <button onClick={()=> openControl('paused')}><span>Pause</span> <FontAwesomeIcon icon={faPause} /></button>
       </div>
       <div className="pairs-found">
         <p>Pairs found: <span>{pairsFound}</span></p>
