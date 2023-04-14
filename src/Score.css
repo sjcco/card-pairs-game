@@ -37,6 +37,13 @@ nav > div {
   margin: 0;
 }
 
+@media (max-width: 1536px) {
+  nav {
+    width: 80%;
+    grid-template-columns: 6fr 2fr 1fr;
+  }
+}
+
 @media (max-width: 800px) {
   nav {
     width: 90%;
