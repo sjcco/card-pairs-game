@@ -14,7 +14,7 @@ const shuffle = (array: any[]) => {
 }
 const fotoApi = 'https://picsum.photos/v2/list?limit=100';
 
-const TOTAL_CARDS = 1;
+const TOTAL_CARDS = 10;
 
 const useSetup = (refreshGame: boolean) => {
   const [gameState, setGameState] = useState<CardProps[]>([]);
