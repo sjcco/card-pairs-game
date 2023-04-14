@@ -1,44 +1,32 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import RotatingCard from './Card'
 import Score from './Score'
+import useSetup from './hooks/useSetup'
+import ControlScreen from './ControlScreen'
+import { scores, states } from './interfaces'
+import useStorage from './hooks/useStorage'
+import useTimer from './hooks/useTimer'
 
-const shuffle = (array: any[]) => {
-  let currentIndex = array.length,  randomIndex;
-  while (currentIndex != 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
-  }
-  return array;
-}
-
-const fotoApi = 'https://picsum.photos/v2/list?limit=100';
 const PAIR_FOUND = 'pair-found';
-const TOTAL_CARDS = 10;
-
-interface CardProps {
-  id: number;
-  clicked: string;
-  pairFound: string;
-  background: string;
-}
+const CLICKED = 'clicked';
 
 function App() {
-  const [gameState, setGameState] = useState<CardProps[]>([])
+  const [refreshGame, setRefreshGame] = useState<boolean>(false);
+  const {gameState, setGameState, gameReady} = useSetup(refreshGame);
   const [turnedCard, setTurnedCard] = useState<{background: string, id: number}>();
   const [gameRunning, setGameRunning] = useState<boolean>(false);
+  const [controlIsOpen, setControlIsOpen] = useState<boolean>(true);
+  const [controlState, setControlState] = useState<states>('start');
+  const [storage, setStorage] = useStorage('topScores');
+  const timer = useTimer(gameRunning, refreshGame);
 
   const handleClick = (id:number, background: string) => {
     setGameState(prev => prev.map(card => {
       if(card.id === id) {
         return {
           ...card,
-          clicked: card.clicked === '' ? 'clicked' : '',
+          clicked: card.clicked === '' ? CLICKED : '',
         }
       } else {
         return card
@@ -47,30 +35,43 @@ function App() {
     setTurnedCard(prev => prev === undefined ? {background, id} : undefined )
   }
 
-  useEffect(() => {
-    fetch(fotoApi).then(res => res.json())
-      .then(data => {
-        let backgrounds = data.map((foto: any) => foto.download_url)
-        backgrounds = shuffle(backgrounds).slice(0, TOTAL_CARDS)
-        
-        let cardSetup: CardProps[] = [];
-        backgrounds.forEach((background: string) => {
-          cardSetup.push({
-            id: !cardSetup.length ? 0 : cardSetup[cardSetup.length -1].id + 1,
-            clicked: '',
-            pairFound: '',
-            background: background
-          })
-          cardSetup.push({
-            id: cardSetup[cardSetup.length -1].id + 1,
-            clicked: '',
-            pairFound: '',
-            background: background
-          })
-        });
-        setGameState(shuffle(cardSetup));
-      })
-  }, []);
+  const closeControl = (state: states) => {
+    if(state === 'end'){
+      setRefreshGame(prev => !prev)
+    }
+    if(gameReady){
+      setGameRunning(true)
+      setControlIsOpen(false)
+      setControlState('running')
+    }
+  }
+
+  const openControl = (state: states) => {
+    console.log('state :>> ', state);
+    setGameRunning(false)
+    setControlState(state)
+    if(state === 'end'){
+      saveScore()
+    }
+    setControlIsOpen(true)
+  }
+
+  const saveScore = () => {
+    if(storage.length === 0){
+      setStorage([{string: `${timer.hours}:${timer.minutes}:${timer.seconds}`, seconds: timer.totalSeconds}])
+    } else {
+      if(storage[storage.length -1].seconds > timer.totalSeconds || storage.length <= 2){
+        let temp: scores = storage
+        temp.push({string: `${timer.hours}:${timer.minutes}:${timer.seconds}`, seconds: timer.totalSeconds})
+        console.log('temp :>> ', temp);
+        temp = temp.sort((a, b) => a.seconds - b.seconds)
+        if(temp.length > 3){
+          temp.pop()
+        }
+        setStorage(temp)
+      }
+    }
+  }
 
   useEffect(() => {
     let turnedCards = gameState.filter(card => card.clicked && !card.pairFound)
@@ -92,14 +93,26 @@ function App() {
     }
   }, [turnedCard]);
 
+  useEffect(() => {
+    if(gameState.length !== 0 && gameState.every(card => card.pairFound === PAIR_FOUND)){
+      openControl('end')
+    }
+  }, [gameState]);
+
   return (
     <>
-      <Score gameRunning={gameRunning} pairsFound={gameState.filter(card => card.pairFound === PAIR_FOUND).length/2}/>
+      <Score
+        gameRunning={gameRunning}
+        pairsFound={gameState.filter(card => card.pairFound === PAIR_FOUND).length/2}
+        openControl={openControl}
+        timer={timer}
+      />
       <div className='cards-container'>
         {gameState.map(card => 
           <RotatingCard key={card.id} {...card} handleClick={handleClick} />
         )}
       </div>
+      <ControlScreen isOpen={controlIsOpen} state={controlState} onClose={closeControl} topScores={storage} />
     </>
   )
 }
