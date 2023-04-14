@@ -1,0 +1,62 @@
+.backdrop {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  background-color: rgba(41, 41, 41, 0.418);
+}
+
+.modal {
+  position: relative;
+  z-index: 1001;
+  width: 50%;
+  height: fit-content;
+  margin: auto;
+  top: 25%;
+  padding: 20px;
+  background-color: #242424;
+  border-radius: 30px;
+  box-shadow: 1px -1px 87px 13px rgba(0,0,0,0.82);
+-webkit-box-shadow: 1px -1px 87px 13px rgba(0,0,0,0.82);
+-moz-box-shadow: 1px -1px 87px 13px rgba(0,0,0,0.82);
+}
+
+.modal-title {
+  width: 80%;
+  margin: 1rem auto;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.modal-content {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-content > h3 {
+  margin: 0.8rem auto;
+}
+
+.modal-content > * {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.modal-content > button {
+  padding: 1rem;
+}
+
+.scores {
+  margin-bottom: 1.5rem;
+}
+
+.score {
+  margin: 0.4rem auto
+}
