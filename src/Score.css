@@ -1,0 +1,19 @@
+.top-bar {
+  width: 100%;
+  padding: 0;
+  background-color: black;
+}
+
+nav {
+  width: 70%;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  justify-content: end;
+}
+
+.score {
+  padding: 0;
+  margin: 0 1rem;
+  height: auto;
+}
