@@ -25,7 +25,7 @@ const ControlScreen: FC<ControlScreenProps> = (props) => {
             rocketsPoint: {
               min: 0,
               max: 100
-            },intensity: 50
+            }
           }}
           style={{
             top: 0,
