@@ -107,7 +107,7 @@ function App() {
         openControl={openControl}
         timer={timer}
       />
-      <div className='cards-container'>
+      <div className='cards-container' style={controlIsOpen ? {filter: 'blur(10px)'} : {}}>
         {gameState.map(card => 
           <RotatingCard key={card.id} {...card} handleClick={handleClick} />
         )}

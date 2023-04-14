@@ -31,6 +31,7 @@ const ControlScreen: FC<ControlScreenProps> = (props) => {
             top: 0,
             left: 0,
             width: '100%',
+            zIndex: 1002,
             height: '100%',
             position: 'fixed',
           }}

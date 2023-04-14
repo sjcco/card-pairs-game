@@ -8,13 +8,13 @@
   height: 100%;
   width: 100%;
   overflow: auto;
-  background-color: rgba(41, 41, 41, 0.418);
+  background-color: rgba(41, 41, 41, 0.591);
 }
 
 .modal {
   position: relative;
   z-index: 1001;
-  width: 50%;
+  width: 30%;
   height: fit-content;
   margin: auto;
   top: 25%;
@@ -59,4 +59,16 @@
 
 .score {
   margin: 0.4rem auto
+}
+
+@media (max-width: 1536px) {
+  .modal {
+    width: 60%;
+  }
+}
+
+@media (max-width: 800px) {
+  .modal {
+    width: 80%;
+  }
 }
