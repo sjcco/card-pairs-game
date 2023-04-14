@@ -13,12 +13,12 @@
 }
 
 .cards-container {
-  width: 80%;
+  width: 70%;
   height: 80%;
   margin: 2rem auto;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   grid-gap: 1rem;
 }
 
@@ -58,4 +58,11 @@
 
 .read-the-docs {
   color: #888;
+}
+
+@media (max-width: 1536px) {
+  .cards-container {
+    width: 80%;
+    height: 85%;
+  }
 }
